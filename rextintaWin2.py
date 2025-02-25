@@ -2,13 +2,6 @@ import sqlite3
 import os
 from datetime import datetime
 
-clear = ''
-
-if os.name == 'nt':
-    clear = 'clear'
-else:
-    clear = 'cls'
-
 try:
     conn = sqlite3.connect(os.path.join('db_tinta', 'tinta.db'))
     cursor = conn.cursor()
@@ -16,7 +9,7 @@ except Exception as e:
     print(f'Houve um erro aqui {e}')
 
 while True:
-    os.system(clear)
+    os.system('clear')
     print('*' * 14)
     linha = ''
     lata = ''
