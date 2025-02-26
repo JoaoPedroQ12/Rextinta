@@ -5,9 +5,9 @@ from datetime import datetime
 clear = ''
 
 if os.name == 'nt':
-    clear = 'clear'
-else:
     clear = 'cls'
+else:
+    clear = 'clear'
 
 try:
     conn = sqlite3.connect(os.path.join('db_tinta', 'tinta.db'))
