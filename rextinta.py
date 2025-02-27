@@ -41,7 +41,7 @@ while True:
             lata = '900ml'
         codigo_tinta = input('Codigo tinta:')
         nome = input('nome:')
-        cursor.execute("INSERT INTO rextinta(nome, data, cor, lata, linha, quantidade, base) VALUES(?,?,?,?,?,?,?)", (nome.capitalize(), data, codigo_tinta, lata, linha, quantidade, base.upper()))
+        cursor.execute("INSERT INTO rextinta(nome, data, cor, lata, linha, quantidade, base) VALUES(?,?,?,?,?,?,?)", (nome.upper(), data, codigo_tinta.upper(), lata, linha, quantidade, base.upper()))
         conn.commit()
         continue        
 
