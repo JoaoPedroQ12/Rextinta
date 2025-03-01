@@ -1,6 +1,7 @@
 import pdfplumber as pdf
 import os 
 import re
+import glob
 
 tintas = {
     "020036": {"produto": "EMBORRACHADA", "base": "A", "volume": "18LT"},
@@ -53,4 +54,7 @@ with pdf.open(os.path.join(r'/home/lemon/Downloads', 'Orçamento Nº 0618589.pdf
                 lata = s['volume']
     print(cod, linha, base, lata)
 
-
+p = glob.glob(pathname=os.path.join(r'/home/lemon/Downloads','*.pdf'))
+print(p)
+for t in p:
+    print(p)
