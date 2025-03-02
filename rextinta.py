@@ -2,6 +2,7 @@ import sqlite3
 import os
 import glob
 import re
+import shutil
 import pdfplumber as pdf
 
 tintas = [
@@ -35,22 +36,35 @@ except Exception as e:
 path_input = os.path.join('raque')
 path_out = os.path.join('deposito')
 
-notes = glob.glob(os.path.join(path_input, "*.pdf"))
 
-for note in notes:
+while True:
+    try:
+         notes = glob.glob(os.path.join(path_input, "*.pdf"))
+         if notes:
+             os.system(clear)
+             for note in notes:
+                 with pdf.open(note) as pf:
+                     content = pf.pages[0].extract_text()
+                     date = re.search(r'\d{2}/\d{2}/\d{2}', content)
+                     client = re.search(r'C[0-9]+-\s+[A-Za-z\s]+\s', content)
+                     nmov = re.search(r'\d{6}\S', content)
+                     product = re.findall(r'^\d{6}', content, re.MULTILINE)
+                     color = re.search(r'#[A-Za-z0-9]+\b', content)
+                     for item in product:
+                         for code in tintas:
+                             if item == code:
+                                 product = re.search(fr'{code}\s+([A-Z\s\-\.]+)\s(\d+|,  \d+|\d+)\S(\d+|, \d+|\d+)', content)
+                 print(f"Numero movimento: {nmov.group()}\nCliente: {client.group()}\nData: {date.group()}\nProduto: {product.group()}")
+                 desc = input('Os dados estão correstos(S/N):')
 
-    with pdf.open(note) as pf:
-        content = pf.pages[0].extract_text()
-        date = re.search(r'\d{2}/\d{2}/\d{2}', content)
-        client = re.search(r'C[0-9]+-\s+[A-Za-z\s]+\s', content)
-        nmov = re.search(r'\d{6}\S', content)
-        product = re.findall(r'^\d{6}', content, re.MULTILINE)
-        #color = re.search(r'#[A-Za-z0-9]+\b')
-        for item in product:
-            for code in tintas:
-                if item == code:
-                    product = re.search(fr'{code}\s+([A-Z\s\-\.]+)\s(\d+|,  \d+|\d+)\S(\d+|, \d+|\d+)', content)
-    print(type(nmov.group()), client.group(), date.group(), product.group())
+                 if desc.upper() != 'N':
+                     qq = input('Quantidade de latas:')
+                     cursor.execute("INSERT INTO rextinta(nmov, nome, data, produto) VALUES (?, ?, ?, ?)", (nmov.group(), client.group(), date.group(), product.group() + ' | Quantidade: ' + qq ))
+                     conn.commit()
+                 shutil.copy2(note, path_out)
+                 os.remove(note)
+         else:
+             print('Esperando dados...')
+    except Exception as e:
+        print(f'Houve um erro aqui {e}')
 
-    cursor.execute("INSERT INTO rextinta(nmov, nome, data, produto) VALUES (?, ?, ?, ?)", (nmov.group(), client.group(), date.group(), product.group()))
-    conn.commit()
