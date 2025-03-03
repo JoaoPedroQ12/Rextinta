@@ -54,13 +54,13 @@ while True:
                          for code in tintas:
                              if item == code:
                                  product = re.search(fr'{code}\s+([A-Z\s\-\.]+)\s(\d+|,  \d+|\d+)\S(\d+|, \d+|\d+)', content)
-                 print(f"Numero movimento: {nmov.group()}\nCliente: {client.group()}\nData: {date.group()}\nProduto: {product.group()}")
-                 desc = input('Os dados estão correstos(S/N):')
+                                 print(f"Numero movimento: {nmov.group()}\nCliente: {client.group()}\nData: {date.group()}\nProduto: {product.group()}")
+                                 desc = input('Os dados estão correstos(S/N):')
 
-                 if desc.upper() != 'N':
-                     qq = input('Quantidade de latas:')
-                     cursor.execute("INSERT INTO rextinta(nmov, nome, data, produto) VALUES (?, ?, ?, ?)", (nmov.group(), client.group(), date.group(), product.group() + ' | Quantidade: ' + qq ))
-                     conn.commit()
+                                 if desc.upper() != 'N':
+                                     qq = input('Quantidade de latas:')
+                                     cursor.execute("INSERT INTO rextinta(nmov, nome, data, produto) VALUES (?, ?, ?, ?)", (nmov.group(), client.group(), date.group(), product.group() + ' | Quantidade: ' + qq ))
+                                     conn.commit()
                  shutil.copy2(note, path_out)
                  os.remove(note)
          else:
