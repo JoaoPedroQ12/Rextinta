@@ -4,6 +4,7 @@ import glob
 import re
 import shutil
 import pdfplumber as pdf
+
 # Codes of paint
 tintas = [
     '020036', '020035', '020034', '020033', '020032', '020031',
