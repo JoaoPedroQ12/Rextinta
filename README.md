@@ -8,6 +8,7 @@ Quando algumas das informações não forem encontradas ele mostra uma mensagem 
 O banco de dados aceita valores vazios.
 
 Fomato da nota e mais ou menos assim:
+
 \\numero do moviment(nmov)
 0000008
 
