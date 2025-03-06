@@ -62,6 +62,7 @@ while True:
                          print('| Produto não encontrado |\n')
                      elif not color:
                          print('| Cor não encontrada |\n')
+                         color = ['0'] * len(product)
                      else:
                          print(' :) \n')
                      for item in product: # For paint in note assigenment of db with the information: client, date, nmov(number of moviment), product(paint) and color
@@ -81,4 +82,5 @@ while True:
              print('Esperando dados...')
     except Exception as e:
         print(f'Houve um erro aqui {e}')
+        
 
