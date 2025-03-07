@@ -22,7 +22,6 @@ product = ''
 color = ''
 clear = ''
 qq = ''
-cont = 0
 
 if os.name == 'nt':
     clear = 'cls'
@@ -51,7 +50,6 @@ while True:
                      client = re.search(r'C[0-9]+-\s+[A-Za-z\s]+\s', content)
                      nmov = re.search(r'\d{6}\S', content)
                      product = re.findall(r'^\d{6}', content, re.MULTILINE)
-                     color = re.findall(r'#[A-Za-z0-9]+\b', content, re.MULTILINE)
                      if not date: # Verication if the vars they were assingned
                          print('| Data não encontrada |\n')
                      elif not client:
@@ -60,22 +58,19 @@ while True:
                          print('| Numero do movimento não encontrado |\n')
                      elif not product:
                          print('| Produto não encontrado |\n')
-                     elif not color:
-                         print('| Cor não encontrada |\n')
-                         color = ['0'] * len(product)
                      else:
                          print(' :) \n')
                      for item in product: # For paint in note assigenment of db with the information: client, date, nmov(number of moviment), product(paint) and color
                          for code in tintas:
                              if item == code:
                                  product = re.search(fr'{code}\s+([A-Z\s\-\.]+)\s(\d+|,  \d+|\d+)\S(\d+|, \d+|\d+)', content)
-                                 print(f"Numero movimento: {nmov.group()}\nCliente: {client.group()}\nData: {date.group()}\nProduto: {product.group()}\nCor: {color[cont]}")
+                                 print(f"Numero movimento: {nmov.group()}\nCliente: {client.group()}\nData: {date.group()}\nProduto: {product.group()}\n")
                                  desc = input('Os dados estão correstos(S/N):')
                                  if desc.upper() != 'N': # Save in db
                                      qq = input('Quantidade de latas:')
-                                     cursor.execute("INSERT INTO rextinta(nmov, nome, data, produto, cor) VALUES (?, ?, ?, ?, ?)", (nmov.group(), client.group(), date.group(), product.group() + ' | Quantidade: ' + qq, color[cont] ))
+                                     color = input('Qual cor:')
+                                     cursor.execute("INSERT INTO rextinta(nmov, nome, data, produto, cor) VALUES (?, ?, ?, ?, ?)", (nmov.group(), client.group(), date.group(), product.group() + ' | Quantidade: ' + qq, color.upper() ))
                                      conn.commit()
-                                     cont += 1
                  shutil.copy2(note, path_out) # moving file pdf for deposito
                  os.remove(note)
          else:
